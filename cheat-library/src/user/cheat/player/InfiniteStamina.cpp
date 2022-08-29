@@ -18,18 +18,18 @@ namespace cheat::feature
 
     const FeatureGUIInfo& InfiniteStamina::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info { "Infinite Stamina", "Player", true };
+        static const FeatureGUIInfo info { u8"无限体力", "Player", true };
         return info;
     }
 
     void InfiniteStamina::DrawMain()
     {
-		ConfigWidget("Enabled", f_Enabled, "Enables infinite stamina option.");
+		ConfigWidget(u8"开/关", f_Enabled, u8"启用无限耐力选项。");
 
-		ConfigWidget("Move Sync Packet Replacement", f_PacketReplacement,
-			"This mode prevents sending server packets with stamina cost actions,\n"
-			"e.g. swim, climb, sprint, etc.\n"
-			"NOTE: This is may be more safe than the standard method. More testing is needed.");
+		ConfigWidget(u8"移动同步数据包替换", f_PacketReplacement,
+			u8"该模式防止发送具有耐力成本动作的服务器分组，\n"
+			u8"比如游泳、攀爬、短跑等。\n"
+			u8"注：这可能比标准方法更安全。需要更多的测试。");
     }
 
     bool InfiniteStamina::NeedStatusDraw() const
@@ -39,7 +39,7 @@ namespace cheat::feature
 
     void InfiniteStamina::DrawStatus() 
     { 
-        ImGui::Text("Inf. Stamina [%s]", f_PacketReplacement ? "Packet" : "Normal");
+        ImGui::Text(u8"无限体力 [%s]", f_PacketReplacement ? "Packet" : "Normal");
     }
 
     InfiniteStamina& InfiniteStamina::GetInstance()

@@ -21,8 +21,8 @@ namespace cheat::feature
 
     void ElementalSight::DrawMain()
     {
-        ConfigWidget("Permanent Elemental Sight", f_Enabled, "Elemental sight is kept on even when moving.\n"
-                     "To turn off, toggle off and use Elemental Sight again.");
+        ConfigWidget(u8"元素视野", f_Enabled, u8"即使在移动时，元素视线仍保持打开。\n"
+                     u8"要关闭，请关闭并再次使用元素视线。");
     }
 
     bool ElementalSight::NeedStatusDraw() const
@@ -32,7 +32,7 @@ namespace cheat::feature
 
     void ElementalSight::DrawStatus()
     {
-        ImGui::Text("Perma Elemental Sight");
+        ImGui::Text(u8"元素视野");
     }
 
     ElementalSight& ElementalSight::GetInstance()

@@ -18,7 +18,7 @@ namespace cheat::feature
     static void MusicGamePlayComponent_OnHit_Hook(app::MusicGamePlayComponent* __this, float score, MethodInfo* method);
 
     MusicEvent::MusicEvent() : Feature(),
-        NF(f_Enabled, "Music Event", "MusicEvent", false)
+        NF(f_Enabled, u8"音乐事件", "MusicEvent", false)
     {
         //HookManager::install(app::MusicGamePlayComponent_OnStart, MusicGamePlayComponent_OnStart_Hook);
         HookManager::install(app::MusicGamePlayComponent_OnMiss, MusicGamePlayComponent_OnMiss_Hook);
@@ -39,8 +39,8 @@ namespace cheat::feature
 
     void MusicEvent::DrawMain()
     {
-        ConfigWidget(f_Enabled, "Enemies don't attack or use abilities against player. \n"
-            "May not work with some enemies or enemy abilites.");
+        ConfigWidget(f_Enabled, u8"敌人不会攻击或使用异能攻击玩家。\n"
+            u8"可能无法与某些敌人或敌人技能一起使用。");
     }
 
     bool MusicEvent::NeedStatusDraw() const
@@ -50,7 +50,7 @@ namespace cheat::feature
 
     void MusicEvent::DrawStatus()
     {
-        ImGui::Text("Music Event");
+        ImGui::Text(u8"音乐事件");
     }
 
     MusicEvent& MusicEvent::GetInstance()
