@@ -11,9 +11,9 @@
 namespace cheat::feature 
 {
 	PacketSniffer::PacketSniffer() : Feature(),
-		NF(f_CaptureEnabled, u8"抓包", "PacketSniffer", false),
-		NF(f_ManipulationEnabled, u8"操作处理", "PacketSniffer", false),
-		NF(f_PipeName, u8"通道名称", "PacketSniffer", "genshin_packet_pipe")
+		NF(f_CaptureEnabled, "Capturing", "PacketSniffer", false),
+		NF(f_ManipulationEnabled, "Manipulation", "PacketSniffer", false),
+		NF(f_PipeName, "Pipe name", "PacketSniffer", "genshin_packet_pipe")
 
 	{
 		client.Connect(f_PipeName.value());
@@ -24,16 +24,16 @@ namespace cheat::feature
 
 	const FeatureGUIInfo& PacketSniffer::GetGUIInfo() const
 	{
-		static const FeatureGUIInfo info{ u8"数据包嗅探器", "Settings", true };
+		static const FeatureGUIInfo info{ "Packet Sniffer", "Settings", true };
 		return info;
 	}
 
 	void PacketSniffer::DrawMain()
 	{
-		ImGui::Text(u8"开发人员：对于具有指定名称的命名通道的工作需要服务器。\n检查“数据包处理程序”项目，如示例所示。");
-		ConfigWidget(f_PipeName, u8"用于连接的通道名称。更改将在下一次游戏发布后生效。");
-		ConfigWidget(f_CaptureEnabled, u8"启用数据包信息捕获并发送到通道（如果存在）。");
-		ConfigWidget(f_ManipulationEnabled, u8"启用嗅探器阻止和修改数据包，可能导致网络延迟。");
+		ImGui::Text("Dev: for working needs server for named pipe with specified name.\nCheck 'packet-handler' project like example.");
+		ConfigWidget(f_PipeName, "Pipe name for connecting. Changes will apply after next game launch.");
+		ConfigWidget(f_CaptureEnabled, "Enable capturing of packet info and sending to pipe, if it exists.");
+		ConfigWidget(f_ManipulationEnabled, "Enable blocking and modifying packets by sniffer, can cause network lags.");
 	}
 	
 	PacketSniffer& PacketSniffer::GetInstance()
@@ -149,14 +149,14 @@ namespace cheat::feature
 
 		if (magicHead != 0x4567)
 		{
-			LOG_ERROR(u8"数据包的头魔术值无效。");
+			LOG_ERROR("Head magic value for packet is not valid.");
 			return false;
 		}
 
 		uint16_t magicEnd = util::ReadMapped<uint16_t>(data, length - 2);
 		if (magicEnd != 0x89AB)
 		{
-			LOG_ERROR(u8"数据包的结束魔术值无效。");
+			LOG_ERROR("End magic value for packet is not valid.");
 			return false;
 		}
 
@@ -166,7 +166,7 @@ namespace cheat::feature
 
 		if (length < headSize + contenSize + 12)
 		{
-			LOG_ERROR(u8"数据包大小无效。");
+			LOG_ERROR("Packet size is not valid.");
 			return false;
 		}
 

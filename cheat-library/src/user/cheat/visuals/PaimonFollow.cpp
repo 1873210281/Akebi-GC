@@ -20,13 +20,13 @@ namespace cheat::feature
 
     const FeatureGUIInfo& PaimonFollow::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info{ u8"≈…√Œ∏˙ÀÊ", "Visuals", true };
+        static const FeatureGUIInfo info{ "PaimonFollow", "Visuals", true };
         return info;
     }
 
     void PaimonFollow::DrawMain()
     {
-        ConfigWidget(u8"≈…√Œ∏˙ÀÊ", f_Enabled, "To display paimon, turn on the function, open the profile (esc) and close it. \n" \
+        ConfigWidget(f_Enabled, "To display paimon, turn on the function, open the profile (esc) and close it. \n" \
             "If the paimon disappeared after teleportation, do not disable the function, open and close the profile.");
     }
 
@@ -37,7 +37,7 @@ namespace cheat::feature
 
     void PaimonFollow::DrawStatus()
     {
-        ImGui::Text(u8"≈…√Œ∏˙ÀÊ");
+        ImGui::Text("Paimon Follow");
     }
 
     PaimonFollow& PaimonFollow::GetInstance()
