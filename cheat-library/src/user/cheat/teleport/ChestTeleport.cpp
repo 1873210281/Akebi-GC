@@ -10,27 +10,27 @@
 namespace cheat::feature 
 {
 
-    ChestTeleport::ChestTeleport() : ItemTeleportBase("ChestTeleport", "Chest"),
-        NF(f_FilterChestLocked    , "Locked",       "ChestTeleport", true),
-		NF(f_FilterChestInRock    , "In rock",      "ChestTeleport", true),
-		NF(f_FilterChestFrozen    , "Frozen",       "ChestTeleport", true),
-		NF(f_FilterChestBramble   , "Bramble",      "ChestTeleport", true),
-		NF(f_FilterChestTrap      , "Trap",         "ChestTeleport", true),
+    ChestTeleport::ChestTeleport() : ItemTeleportBase("ChestTeleport", u8"宝箱"),
+        NF(f_FilterChestLocked    , u8"被锁住的",       "ChestTeleport", true),
+		NF(f_FilterChestInRock    , u8"在岩石中的",      "ChestTeleport", true),
+		NF(f_FilterChestFrozen    , u8"被冻结的",       "ChestTeleport", true),
+		NF(f_FilterChestBramble   , u8"在荆棘中的",      "ChestTeleport", true),
+		NF(f_FilterChestTrap      , u8"在陷阱中的",         "ChestTeleport", true),
 
-		NF(f_FilterChestCommon    , "Common",       "ChestTeleport", true),
-		NF(f_FilterChestExquisite , "Exquisite",    "ChestTeleport", true),
-		NF(f_FilterChestPrecious  , "Precious",     "ChestTeleport", true),
-		NF(f_FilterChestLuxurious , "Luxurious",    "ChestTeleport", true),
-		NF(f_FilterChestRemarkable, "Remarkable",   "ChestTeleport", true),
+		NF(f_FilterChestCommon    , u8"普通宝箱",       "ChestTeleport", true),
+		NF(f_FilterChestExquisite , u8"精致宝箱",    "ChestTeleport", true),
+		NF(f_FilterChestPrecious  , u8"珍贵宝箱",     "ChestTeleport", true),
+		NF(f_FilterChestLuxurious , u8"华丽宝箱",    "ChestTeleport", true),
+		NF(f_FilterChestRemarkable, u8"奇馈宝箱",   "ChestTeleport", true),
 
-		NF(f_FilterChest          , "Chests",       "ChestTeleport", true),
-		NF(f_FilterInvestigates   , "Investigates", "ChestTeleport", false),
-		NF(f_FilterBookPage       , "Book pages",   "ChestTeleport", false),
+		NF(f_FilterChest          , u8"宝箱",       "ChestTeleport", true),
+		NF(f_FilterInvestigates   , u8"调查点", "ChestTeleport", false),
+		NF(f_FilterBookPage       , u8"书本",   "ChestTeleport", false),
 		NF(f_FilterBGM            , "BGMs",         "ChestTeleport", false),
-		NF(f_FilterQuestInt       , "Quest Interaction",  "ChestTeleport", false),
-		NF(f_FilterFloraChest     , "Flora chest",  "ChestTeleport", false),
+		NF(f_FilterQuestInt       , u8"探索互动",  "ChestTeleport", false),
+		NF(f_FilterFloraChest     , u8"植物箱",  "ChestTeleport", false),
 
-		NF(f_FilterUnknown        , "Unknowns",     "ChestTeleport", true)
+		NF(f_FilterUnknown        , u8"未知样品",     "ChestTeleport", true)
 	{ }
 
 
@@ -41,7 +41,7 @@ namespace cheat::feature
 		if (ImGui::TreeNode("Filters"))
 		{
 
-			ImGui::Text("Type Filters");
+			ImGui::Text(u8"类型过滤");
 
 			ConfigWidget(f_FilterChest, "Enable chest detection and filters.");
 			ConfigWidget(f_FilterInvestigates);
@@ -110,7 +110,7 @@ namespace cheat::feature
 
 	const FeatureGUIInfo& ChestTeleport::GetGUIInfo() const
 	{
-		static const FeatureGUIInfo info{ "Chest Teleport", "Teleport", true };
+		static const FeatureGUIInfo info{ u8"宝箱传送", "Teleport", true };
 		return info;
 	}
 
@@ -140,11 +140,11 @@ namespace cheat::feature
 		{
 			if (!f_FilterChest)
 				return FilterStatus::Invalid;
-			
+
 			auto chestRarity = entity->chestRarity();
 			if (chestRarity == game::Chest::ChestRarity::Unknown)
 				return FilterStatus::Unknown;
-			
+
 			bool rarityValid = (chestRarity == game::Chest::ChestRarity::Common && f_FilterChestCommon) ||
 				(chestRarity == game::Chest::ChestRarity::Exquisite  && f_FilterChestExquisite) ||
 				(chestRarity == game::Chest::ChestRarity::Precious   && f_FilterChestPrecious) ||
@@ -213,7 +213,7 @@ namespace cheat::feature
 	}
 
 	void ChestTeleport::DrawChests()
-	{	
+	{
 		if (!ImGui::TreeNode("Items"))
 			return;
 
@@ -229,7 +229,7 @@ namespace cheat::feature
 			ImGui::TableNextColumn();
 			if (chest->itemType() == game::Chest::ItemType::Chest)
 			{
-				ImGui::TextColored(chest->chestColor(), "%s [%s] [%s] at %0.3fm", 
+				ImGui::TextColored(chest->chestColor(), "%s [%s] [%s] at %0.3fm",
 					magic_enum::enum_name(chest->itemType()).data(),
 					magic_enum::enum_name(chest->chestRarity()).data(),
 					magic_enum::enum_name(chest->chestState()).data(),
@@ -237,13 +237,13 @@ namespace cheat::feature
 			}
 			else
 			{
-				ImGui::TextColored(chest->chestColor(), "%s at %0.3fm", magic_enum::enum_name(chest->itemType()).data(), 
+				ImGui::TextColored(chest->chestColor(), "%s at %0.3fm", magic_enum::enum_name(chest->itemType()).data(),
 					manager.avatar()->distance(entity));
 			}
 
 			ImGui::TableNextColumn();
 
-			if (ImGui::Button("Teleport"))
+			if (ImGui::Button(u8"传送"))
 			{
 				auto& mapTeleport = MapTeleport::GetInstance();
 				mapTeleport.TeleportTo(chest->absolutePosition());
@@ -273,17 +273,17 @@ namespace cheat::feature
 
 		ImGui::TextColored(ImColor(255, 165, 0, 255), "Wow, you found unknown chest names. This means this chest type has no filter yet.");
 		TextURL("Please contribute to issue on GitHub", "https://github.com/CallowBlack/genshin-cheat/issues/48", false, false);
-		
+
 		if (ImGui::Button("Copy to clipboard"))
 		{
 			ImGui::LogToClipboard();
 
 			ImGui::LogText("Unknown Names:\n");
-			
+
 			for (auto& entity : unknowns)
-				ImGui::LogText("%s; Position: %s; Scene: %u\n", entity->name().c_str(), 
+				ImGui::LogText("%s; Position: %s; Scene: %u\n", entity->name().c_str(),
 					il2cppi_to_string(entity->relativePosition()).c_str(), game::GetCurrentPlayerSceneID());
-			
+
 			ImGui::LogFinish();
 		}
 
@@ -295,10 +295,10 @@ namespace cheat::feature
 		for (auto& entity : unknowns)
 		{
 			ImGui::PushID(entity);
-			
+
 			ImGui::TableNextColumn();
 			ImGui::Text("%s. Dist %0.3f", entity->name().c_str(), manager.avatar()->distance(entity));
-			
+
 			ImGui::TableNextColumn();
 			if (ImGui::Button("TP"))
 			{
@@ -315,4 +315,3 @@ namespace cheat::feature
 
 
 }
-

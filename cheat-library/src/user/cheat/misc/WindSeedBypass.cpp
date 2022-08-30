@@ -10,7 +10,7 @@ namespace cheat::feature
     static void PlayerModule_OnReciveLuaShell_Hook(app::MoleMole_PlayerModule* __this, app::Proto_PlayerLuaShellNotify* playerLuaShellNotify, MethodInfo* method);
 
     WindSeedBypass::WindSeedBypass() : Feature(),
-        NFEX(f_Enabled, "Block WindSeed", "m_BlockWindSeed", "General", true, false)
+        NFEX(f_Enabled, u8"阻挡风种", "m_BlockWindSeed", "General", true, false)
     {
         HookManager::install(app::MoleMole_PlayerModule_OnWindSeedClientNotify, PlayerModule_OnWindSeedClientNotify_Hook);
         HookManager::install(app::MoleMole_PlayerModule_OnReciveLuaShell, PlayerModule_OnReciveLuaShell_Hook);
@@ -18,14 +18,14 @@ namespace cheat::feature
 
     const FeatureGUIInfo& WindSeedBypass::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info{ "Block WindSeed", "Settings", true };
+        static const FeatureGUIInfo info{ u8"阻挡风种", "Settings", true };
         return info;
     }
 
     void WindSeedBypass::DrawMain()
     {
         ConfigWidget(f_Enabled,
-            "Blocks the WindSeed Packet which can cause RCE from malicious servers.");
+            u8"阻止可能导致来自恶意服务器的RCE的赢得种子数据包。");
     }
 
     bool WindSeedBypass::NeedStatusDraw() const
@@ -35,7 +35,7 @@ namespace cheat::feature
 
     void WindSeedBypass::DrawStatus()
     {
-        ImGui::Text("Block WindSeed");
+        ImGui::Text(u8"阻挡风种");
     }
 
     WindSeedBypass& WindSeedBypass::GetInstance()
@@ -49,7 +49,7 @@ namespace cheat::feature
         WindSeedBypass& WindSeedBypass = WindSeedBypass::GetInstance();
         if (WindSeedBypass.f_Enabled)
         {
-            LOG_DEBUG("Server sent a WindSeedClientNotify packet!");
+            LOG_DEBUG(u8"服务器发送了一个Wind Seed客户端通知包！");
             return;
         }
 
@@ -61,7 +61,7 @@ namespace cheat::feature
         WindSeedBypass& WindSeedBypass = WindSeedBypass::GetInstance();
         if (WindSeedBypass.f_Enabled)
         {
-            LOG_DEBUG("Server sent a PlayerLuaShellNotify packet!");
+            LOG_DEBUG(u8"Server sent a Player Lua Shell Notify packet!");
             return;
         }
 

@@ -18,17 +18,17 @@ namespace cheat::game
 		if (m_ItemType)
 			return *m_ItemType;
 
-		if (name().find("TreasureBox") != std::string::npos)
+		if (name().find(u8"±¦Ïä") != std::string::npos)
 			m_ItemType = ItemType::Chest;
-		else if (name().find("Search") != std::string::npos || name().find("JunkChest") != std::string::npos)
+		else if (name().find(u8"ËÑË÷") != std::string::npos || name().find("JunkChest") != std::string::npos)
 			m_ItemType = ItemType::Investigate;
-		else if (name().find("BookPage") != std::string::npos)
+		else if (name().find(u8"Êé±¾") != std::string::npos)
 			m_ItemType = ItemType::BookPage;
-		else if (name().find("BGM") != std::string::npos)
+		else if (name().find(u8"ÒôÀÖ") != std::string::npos)
 			m_ItemType = ItemType::BGM;
-		else if (name().find("FloraChest") != std::string::npos)
+		else if (name().find(u8"»¨¹Ú") != std::string::npos)
 			m_ItemType = ItemType::Flora;
-		else if (name().find("Quest_SiteInteract") != std::string::npos)
+		else if (name().find(u8"Ì½Ë÷_Õ¾µã½»»¥") != std::string::npos)
 			m_ItemType = ItemType::QuestInteract;
 		else
 			m_ItemType = ItemType::None;

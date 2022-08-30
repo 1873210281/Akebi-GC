@@ -33,37 +33,37 @@ namespace cheat::feature
 
     const FeatureGUIInfo& NoCD::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info{ "Cooldown Effects", "Player", true };
+        static const FeatureGUIInfo info{ u8"技能冷却", "Player", true };
         return info;
     }
 
     void NoCD::DrawMain()
     {
 
-		ConfigWidget("Max Burst Energy", f_UtimateMaxEnergy,
-			"Removes energy requirement for elemental bursts.\n" \
-			"(Energy bubble may appear incomplete but still usable.)");
+		ConfigWidget(u8"q无需充能", f_UtimateMaxEnergy,
+			u8"消除元素爆发的能量需求.\n" \
+			u8"(能源可能看起来不满，但仍然可用技能.)");
 
 		ConfigWidget("## AbilityReduce", f_AbilityReduce); ImGui::SameLine();
-		ConfigWidget("Reduce Skill/Burst Cooldown", f_TimerReduce, 1.f, 1.f, 6.0f,
-			"Reduce cooldowns of elemental skills and bursts.\n"\
-			"1.0 - no CD, 2.0 and higher - increases the timer value.");
+		ConfigWidget(u8"减少技能冷却", f_TimerReduce, 1.f, 1.f, 6.0f,
+			u8"消除元素爆发的能量需求.\n" \
+			u8"(能源可能看起来不满，但仍然可用技能.)");
 
-    	ConfigWidget(f_Sprint, "Removes delay in-between sprints.");
+		ConfigWidget(u8"取消攻击后摇", f_Sprint, u8"取消攻击后摇.");
 
-    	ConfigWidget("Instant Bow Charge", f_InstantBow, "Disable cooldown of bow charge.\n" \
-			"Known issues with Fischl.");
+		ConfigWidget(u8"弓箭立即蓄力", f_InstantBow, u8"蓄力不用时间.\n" \
+			u8"皇女可能无效.");
 
     	if (f_InstantBow) {
-			ImGui::Text("If Instant Bow Charge doesn't work:");
-			TextURL("Please contribute to issue on GitHub.", "https://github.com/Akebi-Group/Akebi-GC/issues/281", false, false);
-			if (ImGui::TreeNode("Ability Log [DEBUG]"))
+			ImGui::Text(u8"如果弓箭立即蓄力无法使用：");
+			TextURL(u8"请在GitHub上的问题做出贡献.", "https://github.com/Akebi-Group/Akebi-GC/issues/281", false, false);
+			if (ImGui::TreeNode(u8"日志[调试]功能"))
 			{
-				if (ImGui::Button("Copy to Clipboard"))
+				if (ImGui::Button(u8"复制到粘贴板"))
 				{
 					ImGui::LogToClipboard();
 
-					ImGui::LogText("Ability Log:\n");
+					ImGui::LogText(u8"登录能力：\n");
 
 					for (auto& logEntry : abilityLog)
 						ImGui::LogText("%s\n", logEntry.c_str());
@@ -84,12 +84,12 @@ namespace cheat::feature
         return f_InstantBow || f_AbilityReduce || f_Sprint ;
     }
 
-    void NoCD::DrawStatus() 
+    void NoCD::DrawStatus()
     {
-		  ImGui::Text("Cooldown\n[%s%s%s%s%s]",
-			f_AbilityReduce ? fmt::format("Reduce x{:.1f}", f_TimerReduce.value()).c_str() : "",
+		ImGui::Text(u8"技能冷却\n[%s%s%s%s%s]",
+			f_AbilityReduce ? fmt::format(u8"减少 x{:.1f}", f_TimerReduce.value()).c_str() : "",
 			f_AbilityReduce && (f_InstantBow || f_Sprint) ? "|" : "",
-			f_InstantBow ? "Bow" : "",
+			f_InstantBow ? u8"弓箭" : "",
 			f_InstantBow && f_Sprint ? "|" : "",
 			f_Sprint ? "Sprint" : "");
     }
@@ -120,7 +120,7 @@ namespace cheat::feature
 			else {
 				cdMultipler = noCD.f_TimerReduce / 1;
 			}
-		}		
+		}
 		return CALL_ORIGIN(LCAvatarCombat_OnSkillStart, __this, skillID, cdMultipler, method);
 	}
 
@@ -134,7 +134,7 @@ namespace cheat::feature
 			if (cdTimer > noCD.f_TimerReduce)
 			{
 				struct app::SafeFloat MyValueProtect = app::MoleMole_SafeFloat_set_Value(noCD.f_TimerReduce - 1.0f, nullptr); // Subtract -1 from the current timer value
-				skillInfo->fields.cdTimer = MyValueProtect; 
+				skillInfo->fields.cdTimer = MyValueProtect;
 			}
 		}
 		return CALL_ORIGIN(LCAvatarCombat_IsSkillInCD_1, __this, skillInfo, method);
@@ -162,7 +162,7 @@ namespace cheat::feature
 		abilityLog.push_front(logEntry);
 		if (abilityLog.size() > 50)
 			abilityLog.pop_back();
-		 
+
 		NoCD& noCD = NoCD::GetInstance();
 		// This function is calling not only for bows, so if don't put key filter it cause various game mechanic bugs.
 		// For now only "_Enchanted_Time" found for bow charging, maybe there are more. Need to continue research.
@@ -171,9 +171,8 @@ namespace cheat::feature
 			value = maxValue;
 			__this->fields.nextValidAbilityID = 36; // HotFix Yelan, Fishl | It's essentially a game bug. | RyujinZX#7832
 		}
-			
+
 		CALL_ORIGIN(ActorAbilityPlugin_AddDynamicFloatWithRange_Hook, __this, key, value, minValue, maxValue, forceDoAtRemote, method);
 	}
- 
-}
 
+}

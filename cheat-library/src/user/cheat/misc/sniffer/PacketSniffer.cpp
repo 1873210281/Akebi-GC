@@ -8,12 +8,12 @@
 #include <fstream>
 #include <helpers.h>
 
-namespace cheat::feature 
+namespace cheat::feature
 {
 	PacketSniffer::PacketSniffer() : Feature(),
-		NF(f_CaptureEnabled, "Capturing", "PacketSniffer", false),
-		NF(f_ManipulationEnabled, "Manipulation", "PacketSniffer", false),
-		NF(f_PipeName, "Pipe name", "PacketSniffer", "genshin_packet_pipe")
+		NF(f_CaptureEnabled, u8"抓包", "PacketSniffer", false),
+		NF(f_ManipulationEnabled, u8"操作处理", "PacketSniffer", false),
+		NF(f_PipeName, u8"通道名称", "PacketSniffer", "genshin_packet_pipe")
 
 	{
 		client.Connect(f_PipeName.value());
@@ -24,18 +24,18 @@ namespace cheat::feature
 
 	const FeatureGUIInfo& PacketSniffer::GetGUIInfo() const
 	{
-		static const FeatureGUIInfo info{ "Packet Sniffer", "Settings", true };
+		static const FeatureGUIInfo info{ u8"数据包嗅探器", "Settings", true };
 		return info;
 	}
 
 	void PacketSniffer::DrawMain()
 	{
-		ImGui::Text("Dev: for working needs server for named pipe with specified name.\nCheck 'packet-handler' project like example.");
-		ConfigWidget(f_PipeName, "Pipe name for connecting. Changes will apply after next game launch.");
-		ConfigWidget(f_CaptureEnabled, "Enable capturing of packet info and sending to pipe, if it exists.");
-		ConfigWidget(f_ManipulationEnabled, "Enable blocking and modifying packets by sniffer, can cause network lags.");
+		ImGui::Text(u8"开发人员：对于具有指定名称的命名通道的工作需要服务器。\n检查“数据包处理程序”项目，如示例所示。");
+		ConfigWidget(f_PipeName, u8"用于连接的通道名称。更改将在下一次游戏发布后生效。");
+		ConfigWidget(f_CaptureEnabled, u8"启用数据包信息捕获并发送到通道（如果存在）。");
+		ConfigWidget(f_ManipulationEnabled, u8"启用嗅探器阻止和修改数据包，可能导致网络延迟。");
 	}
-	
+
 	PacketSniffer& PacketSniffer::GetInstance()
 	{
 		static PacketSniffer instance;
@@ -72,7 +72,7 @@ namespace cheat::feature
 
 			char* ptr_message_content = ptr_head_content + modify_data->head.size();
 			memcpy_s(ptr_message_content, message_size, modify_data->content.data(), message_size);
-			
+
 			util::WriteMapped(ptr_message_content, message_size, static_cast<uint16_t>(0x89AB));
 
 			EncryptXor(data, data_size);
@@ -131,7 +131,7 @@ namespace cheat::feature
 	{
 		// Packet structure
 		// * Magic word (0x4567) [2 bytes]
-		// * message_id [2 bytes] 
+		// * message_id [2 bytes]
 		// * head_size [2 bytes]
 		// * message_size [4 bytes]
 		// * head_content [<head_size> bytes]
@@ -139,7 +139,7 @@ namespace cheat::feature
 		// * Magic word (0x89AB) [2 bytes]
 
 		// Header size - 12 bytes
-		
+
 		// Decrypting packetData
 		auto data = new char[length];
 		memcpy_s(data, length, encryptedData, length);
@@ -149,14 +149,14 @@ namespace cheat::feature
 
 		if (magicHead != 0x4567)
 		{
-			LOG_ERROR("Head magic value for packet is not valid.");
+			LOG_ERROR(u8"数据包的头魔术值无效。");
 			return false;
 		}
 
 		uint16_t magicEnd = util::ReadMapped<uint16_t>(data, length - 2);
 		if (magicEnd != 0x89AB)
 		{
-			LOG_ERROR("End magic value for packet is not valid.");
+			LOG_ERROR(u8"数据包的结束魔术值无效。");
 			return false;
 		}
 
@@ -166,7 +166,7 @@ namespace cheat::feature
 
 		if (length < headSize + contenSize + 12)
 		{
-			LOG_ERROR("Packet size is not valid.");
+			LOG_ERROR(u8"数据包大小无效。");
 			return false;
 		}
 
@@ -204,4 +204,3 @@ namespace cheat::feature
 		return CALL_ORIGIN(KcpNative_kcp_client_send_packet_Hook, kcp_client, packet, method);
 	}
 }
-

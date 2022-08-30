@@ -12,7 +12,7 @@ namespace cheat::feature
     }
 
     PaimonFollow::PaimonFollow() : Feature(),
-        NFEX(f_Enabled, "Paimon Follow", "PaimonFollow", "Visuals", false, false),
+        NFEX(f_Enabled, u8"派蒙跟随", "PaimonFollow", "Visuals", false, false),
         toBeUpdate(), nextUpdate(0)
     {
         events::GameUpdateEvent += MY_METHOD_HANDLER(PaimonFollow::OnGameUpdate);
@@ -20,14 +20,14 @@ namespace cheat::feature
 
     const FeatureGUIInfo& PaimonFollow::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info{ "PaimonFollow", "Visuals", true };
+        static const FeatureGUIInfo info{ u8"派蒙跟随", "Visuals", true };
         return info;
     }
 
     void PaimonFollow::DrawMain()
     {
-        ConfigWidget(f_Enabled, "To display paimon, turn on the function, open the profile (esc) and close it. \n" \
-            "If the paimon disappeared after teleportation, do not disable the function, open and close the profile.");
+        ConfigWidget(u8"派蒙跟随", f_Enabled, u8"要显示派蒙，请先打开该功能，然后点击esc让后将其关闭 \n" \
+            u8"如果传送后派蒙消失，请不要禁用该功能，打开然后关闭esc即可。");
     }
 
     bool PaimonFollow::NeedStatusDraw() const
@@ -37,7 +37,7 @@ namespace cheat::feature
 
     void PaimonFollow::DrawStatus()
     {
-        ImGui::Text("Paimon Follow");
+        ImGui::Text(u8"派蒙跟随");
     }
 
     PaimonFollow& PaimonFollow::GetInstance()

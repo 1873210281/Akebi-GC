@@ -19,7 +19,7 @@ namespace cheat::feature
 	}
 
     ProtectionBypass::ProtectionBypass() : Feature(),
-        NFEX(f_Enabled, "Disable Protection", "m_DisableMhyProt", "General", true, false),
+        NFEX(f_Enabled, u8"禁用保护", "m_DisableMhyProt", "General", true, false),
 		m_CorrectSignatures({})
     {
 		HookManager::install(app::Unity_RecordUserData, RecordUserData_Hook);
@@ -29,19 +29,19 @@ namespace cheat::feature
 	void ProtectionBypass::Init()
 	{
 		for (int i = 0; i < 4; i++) {
-			LOG_TRACE("Emulating call of RecordUserData with type %d", i);
+			LOG_TRACE(u8"正在模拟类型为的记录用户数据的调用 %d", i);
 			app::Application_RecordUserData(i, nullptr);
 		}
 
 		// if (m_Enabled) {
-			LOG_TRACE("Trying to close mhyprot handle.");
+			LOG_TRACE(u8"试图关闭mhy保护手柄。");
 			if (util::CloseHandleByName(L"\\Device\\mhyprot2"))
-				LOG_INFO("The Mhyprot2 handle was successfully closed. Happy hacking!");
+				LOG_INFO(u8"Mhy保护2句柄已成功关闭。快乐黑客");
 			else
-				LOG_ERROR("Failed to close mhyprot2 handle. Report this Issue and describe it.");
+				LOG_ERROR(u8"无法关闭Mhy保护2句柄。报告并描述此问题。");
 		//}
 
-		LOG_DEBUG("Initialized");
+		LOG_DEBUG(u8"已初始化的");
 	}
 
     const FeatureGUIInfo& ProtectionBypass::GetGUIInfo() const
@@ -53,7 +53,7 @@ namespace cheat::feature
     void ProtectionBypass::DrawMain()
     {
 		ConfigWidget(f_Enabled, 
-			"Close mhyprot2 handle (changes will take effect after relaunch).");
+			u8"关闭mhy保护2句柄（更改将在重新启动后生效）");
     }
 
     ProtectionBypass& ProtectionBypass::GetInstance()
@@ -85,7 +85,7 @@ namespace cheat::feature
 		auto stringValue = std::string((char*)result->vector, length);
 		m_CorrectSignatures[nType] = stringValue;
 
-		LOG_DEBUG("Sniffed correct signature for type %d value '%s'", nType, stringValue.c_str());
+		LOG_DEBUG(u8"检测到类型 %d 值的正确签名 '%s'", nType, stringValue.c_str());
 
 		return result;
 	}
