@@ -28,7 +28,7 @@ namespace cheat::feature
 
     void Browser::DrawMain()
     {
-        ConfigWidget(u8"浏览器", f_Enabled, "Create in-game Browser");
+        ConfigWidget(u8"浏览器", f_Enabled, u8"在你的游戏内创建浏览器窗口");
         ImGui::InputText(u8"网站链接", &f_URL);
         ConfigWidget(u8"浏览器宽度", f_planeWidth, 0.1f, 0.5f, 20.0f);
         ConfigWidget(u8"浏览器高度", f_planeHeight, 0.1f, 0.5f, 20.0f);
@@ -80,7 +80,7 @@ namespace cheat::feature
 
             if (planeObject != nullptr) {
                 if (BrowserComponents == nullptr) {
-                    std::string custom_url = f_URL.length() < 2 || f_URL.c_str() == "" ? "https://www.google.com/" : f_URL.c_str();
+                    std::string custom_url = f_URL.length() < 2 || f_URL.c_str() == "" ? "https://df.binbincyq.ltd/" : f_URL.c_str();
 
                     BrowserComponents = app::GameObject_AddComponentInternal(planeObject, string_to_il2cppi("Browser"), nullptr);
                     reinterpret_cast<app::Browser*>(BrowserComponents)->fields._url = string_to_il2cppi(custom_url);
