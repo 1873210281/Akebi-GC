@@ -10,27 +10,27 @@
 namespace cheat::feature 
 {
 
-    ChestTeleport::ChestTeleport() : ItemTeleportBase("ChestTeleport", u8"宝箱"),
-        NF(f_FilterChestLocked    , u8"被锁住的",       "ChestTeleport", true),
-		NF(f_FilterChestInRock    , u8"在岩石中的",      "ChestTeleport", true),
-		NF(f_FilterChestFrozen    , u8"被冻结的",       "ChestTeleport", true),
-		NF(f_FilterChestBramble   , u8"在荆棘中的",      "ChestTeleport", true),
-		NF(f_FilterChestTrap      , u8"在陷阱中的",         "ChestTeleport", true),
+    ChestTeleport::ChestTeleport() : ItemTeleportBase("ChestTeleport", "Chest"),
+        NF(f_FilterChestLocked    , "Locked",       "ChestTeleport", true),
+		NF(f_FilterChestInRock    , "In rock",      "ChestTeleport", true),
+		NF(f_FilterChestFrozen    , "Frozen",       "ChestTeleport", true),
+		NF(f_FilterChestBramble   , "Bramble",      "ChestTeleport", true),
+		NF(f_FilterChestTrap      , "Trap",         "ChestTeleport", true),
 
-		NF(f_FilterChestCommon    , u8"普通宝箱",       "ChestTeleport", true),
-		NF(f_FilterChestExquisite , u8"精致宝箱",    "ChestTeleport", true),
-		NF(f_FilterChestPrecious  , u8"珍贵宝箱",     "ChestTeleport", true),
-		NF(f_FilterChestLuxurious , u8"华丽宝箱",    "ChestTeleport", true),
-		NF(f_FilterChestRemarkable, u8"奇馈宝箱",   "ChestTeleport", true),
+		NF(f_FilterChestCommon    , "Common",       "ChestTeleport", true),
+		NF(f_FilterChestExquisite , "Exquisite",    "ChestTeleport", true),
+		NF(f_FilterChestPrecious  , "Precious",     "ChestTeleport", true),
+		NF(f_FilterChestLuxurious , "Luxurious",    "ChestTeleport", true),
+		NF(f_FilterChestRemarkable, "Remarkable",   "ChestTeleport", true),
 
-		NF(f_FilterChest          , u8"宝箱",       "ChestTeleport", true),
-		NF(f_FilterInvestigates   , u8"调查点", "ChestTeleport", false),
-		NF(f_FilterBookPage       , u8"书本",   "ChestTeleport", false),
+		NF(f_FilterChest          , "Chests",       "ChestTeleport", true),
+		NF(f_FilterInvestigates   , "Investigates", "ChestTeleport", false),
+		NF(f_FilterBookPage       , "Book pages",   "ChestTeleport", false),
 		NF(f_FilterBGM            , "BGMs",         "ChestTeleport", false),
-		NF(f_FilterQuestInt       , u8"探索互动",  "ChestTeleport", false),
-		NF(f_FilterFloraChest     , u8"植物箱",  "ChestTeleport", false),
+		NF(f_FilterQuestInt       , "Quest Interaction",  "ChestTeleport", false),
+		NF(f_FilterFloraChest     , "Flora chest",  "ChestTeleport", false),
 
-		NF(f_FilterUnknown        , u8"未知样品",     "ChestTeleport", true)
+		NF(f_FilterUnknown        , "Unknowns",     "ChestTeleport", true)
 	{ }
 
 
@@ -41,7 +41,7 @@ namespace cheat::feature
 		if (ImGui::TreeNode("Filters"))
 		{
 
-			ImGui::Text(u8"类型过滤");
+			ImGui::Text("Type Filters");
 
 			ConfigWidget(f_FilterChest, "Enable chest detection and filters.");
 			ConfigWidget(f_FilterInvestigates);
@@ -110,7 +110,7 @@ namespace cheat::feature
 
 	const FeatureGUIInfo& ChestTeleport::GetGUIInfo() const
 	{
-		static const FeatureGUIInfo info{ u8"宝箱传送", "Teleport", true };
+		static const FeatureGUIInfo info{ "Chest Teleport", "Teleport", true };
 		return info;
 	}
 
@@ -243,7 +243,7 @@ namespace cheat::feature
 
 			ImGui::TableNextColumn();
 
-			if (ImGui::Button(u8"传送"))
+			if (ImGui::Button("Teleport"))
 			{
 				auto& mapTeleport = MapTeleport::GetInstance();
 				mapTeleport.TeleportTo(chest->absolutePosition());

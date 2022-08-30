@@ -34,7 +34,7 @@ namespace cheat::feature
 
 	const FeatureGUIInfo& CustomTeleports::GetGUIInfo() const
 	{
-		static const FeatureGUIInfo info{ u8"自定义传送", "Teleport", true };
+		static const FeatureGUIInfo info{ "Custom Teleports", "Teleport", true };
 		return info;
 	}
 
@@ -264,9 +264,9 @@ namespace cheat::feature
 		static std::string JSONBuffer_;
 		static std::string descriptionBuffer_;
 
-		ImGui::InputText(u8"名字", &nameBuffer_);
-		ImGui::InputText(u8"描述", &descriptionBuffer_);
-		if (ImGui::Button(u8"添加传送"))
+		ImGui::InputText("Name", &nameBuffer_);
+		ImGui::InputText("Description", &descriptionBuffer_);
+		if (ImGui::Button("Add Teleport"))
 		{
 			selectedIndex = -1;
 			UpdateIndexName();
@@ -276,7 +276,7 @@ namespace cheat::feature
 		}
 		ImGui::SameLine();
 
-		if (ImGui::Button(u8"重载"))
+		if (ImGui::Button("Reload"))
 		{
 			selectedIndex = -1;
 			UpdateIndexName();
@@ -285,14 +285,14 @@ namespace cheat::feature
 		}
 
 		ImGui::SameLine();
-		if (ImGui::Button(u8"打开文件夹"))
+		if (ImGui::Button("Open Folder"))
 		{
 			CheckFolder();
 			ShellExecuteA(NULL, "open", dir.string().c_str(), NULL, NULL, SW_SHOW);
 		}
 
 		ImGui::SameLine();
-		if (ImGui::Button(u8"加载从JSON"))
+		if (ImGui::Button("Load from JSON"))
 		{
 			if (!JSONBuffer_.empty()) {
 				auto t = SerializeFromJson(JSONBuffer_, false);
@@ -305,24 +305,24 @@ namespace cheat::feature
 			}
 
 		}
-		ImGui::InputTextMultiline(u8"JSON输入", &JSONBuffer_, ImVec2(0, 50), ImGuiInputTextFlags_AllowTabInput);
+		ImGui::InputTextMultiline("JSON input", &JSONBuffer_, ImVec2(0, 50), ImGuiInputTextFlags_AllowTabInput);
 
-		ConfigWidget(u8"传送下一个", f_Next, true, "Press to teleport next of selected.");
-		ConfigWidget(u8"传送上一个", f_Previous, true, "Press to teleport previous of selected.");
-		ConfigWidget(u8"开/关", f_Enabled,
-					 u8"通过列表功能启用远程传输。\n"
-					 u8"用法：\n"
-					 u8"1.使用热键在你想要传送的传送点上打勾\n"
-					 u8"2.单击传送（带复选标记）以选择要开始的位置\n"
-					 u8"3.您现在可以按“下一步”或“上一步”热键传送检查表\n"
-					 u8"最初，它会将玩家传送到所选位置\n"
-					 u8"注意：双击或单击箭头打开传送详细信息");
-		ConfigWidget(u8"启用插值", f_Interpolate, u8"使用键绑定时启用远程传送之间的插值。"); ImGui::SameLine(); ImGui::SetNextItemWidth(300.0f);
-		ConfigWidget(u8"插补速度", f_Speed, 0.1f, 0.1f, 99.0f,
-					 u8"插值速度。\n 建议设置低于或等于0.1。");
-		ConfigWidget(u8"自动传送", f_Auto, u8"启用远程传送之间的自动正向远程传送"); ImGui::SameLine(); ImGui::SetNextItemWidth(300.0f);
-		ConfigWidget(u8"延迟 (s)", f_DelayTime, 1, 0, 60, u8"传送之间的延迟（秒）。\n"
-			u8"注意：这不是完全测试的检测方式。\n不建议使用低值。");
+		ConfigWidget("Teleport Next", f_Next, true, "Press to teleport next of selected.");
+		ConfigWidget("Teleport Previous", f_Previous, true, "Press to teleport previous of selected.");
+		ConfigWidget("Enable", f_Enabled,
+					 "Enable teleport-through-list functionality.\n"
+					 "Usage:\n"
+					 "1. Put Checkmark to the teleports you want to teleport using hotkey\n"
+					 "2. Single click the teleport (with checkmark) to select where you want to start\n"
+					 "3. You can now press Next or Previous Hotkey to Teleport through the Checklist\n"
+					 "Initially it will teleport the player to the selection made\n"
+					 "Note: Double click or click the arrow to open teleport details");
+		ConfigWidget("Enable Interpolation", f_Interpolate, "Enable interpolation between teleports when using keybinds."); ImGui::SameLine(); ImGui::SetNextItemWidth(300.0f);
+		ConfigWidget("Interpolation Speed", f_Speed, 0.1f, 0.1f, 99.0f,
+					 "Interpolation speed.\n recommended setting below or equal to 0.1.");
+		ConfigWidget("Auto Teleport", f_Auto, "Enable automatic forward teleporation between teleports"); ImGui::SameLine(); ImGui::SetNextItemWidth(300.0f);
+		ConfigWidget("Delay Time (s)", f_DelayTime, 1, 0, 60, "Delay (in s) between teleport.\n"
+			"Note: This is not fully tested detection-wise.\nNot recommended with low values.");
 
 		if (ImGui::Button("Delete Checked"))
 		{
@@ -330,7 +330,7 @@ namespace cheat::feature
 			{
 				if (checkedIndices.empty())
 				{
-					LOG_INFO(u8"未选择远程传送");
+					LOG_INFO("No teleports selected");
 					return;
 				}
 				std::vector<std::string> teleportNames;
@@ -339,18 +339,18 @@ namespace cheat::feature
 				for (auto &index : checkedIndices)
 				{
 					std::filesystem::remove(dir / (teleportNames[index] + ".json"));
-					LOG_INFO(u8"删除传送 %s", teleportNames[index].c_str());
+					LOG_INFO("Deleted teleport %s", teleportNames[index].c_str());
 				}
 				checkedIndices.clear();
 				UpdateIndexName();
 				ReloadTeleports();
-			} else {LOG_INFO(u8"没有要删除的远程传送");}
+			} else {LOG_INFO("No teleports to delete");}
 		}
 		ImGui::SameLine();
-		HelpMarker(u8"警告：这将从目录中删除文件，并\n \
-		从列表中删除传送。它将永远丢失。");
+		HelpMarker("Warning: This will delete the file from the directory and\n \
+		remove the teleport from the list. It will be lost forever.");
 
-		if (ImGui::TreeNode(u8"传送"))
+		if (ImGui::TreeNode("Teleports"))
 		{
 			std::sort(Teleports.begin(), Teleports.end(), [](const auto &a, const auto &b)
 					  { return StrCmpLogicalW(std::wstring(a.name.begin(), a.name.end()).c_str(), std::wstring(b.name.begin(), b.name.end()).c_str()) < 0; });

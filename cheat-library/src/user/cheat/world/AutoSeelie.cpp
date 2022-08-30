@@ -5,7 +5,7 @@
 #include <cheat/events.h>
 #include <cheat/game/EntityManager.h>
 #include <cheat/game/util.h>
-#include <cheat/game/filters.h>
+
 namespace cheat::feature
 {
 	AutoSeelie::AutoSeelie() : Feature(),
@@ -23,13 +23,13 @@ namespace cheat::feature
 
 	void AutoSeelie::DrawMain()
 	{
-		ConfigWidget(u8"自动仙灵", f_Enabled, u8"仙灵自动回家");
+		ConfigWidget("Auto seelie", f_Enabled, "Auto follow seelie to its home");
 
 		if (f_Enabled)
 		{
 			ImGui::Indent();
-			ConfigWidget(u8"自动雷灵", f_ElectroSeelie, u8"由于您不需要手动启动electroseelie， \n"
-				u8"他们开始在半径为100米的范围内自动移动。");
+			ConfigWidget("Auto Electro seelie", f_ElectroSeelie, "Since you don't need to manually start electroseelie, \n"
+				"they start moving automatically with this option within 100m radius.");
 			ImGui::SameLine();
 			ImGui::TextColored(ImColor(255, 165, 0, 255), "Read the note!");
 			ImGui::Unindent();
@@ -44,7 +44,7 @@ namespace cheat::feature
 
 	void AutoSeelie::DrawStatus()
 	{
-		ImGui::Text(u8"自动仙灵 %s", f_ElectroSeelie ? u8"+ 雷" : "");
+		ImGui::Text("AutoSeelie %s", f_ElectroSeelie ? "+ Electro" : "");
 	}
 
 	AutoSeelie& AutoSeelie::GetInstance()
@@ -60,9 +60,6 @@ namespace cheat::feature
 		float radius = 100.0f;
 
 		if (entity->name().find("Seelie") != std::string::npos)
-		if (game::filters::puzzle::Seelie.IsValid(entity) ||
-        			game::filters::puzzle::WarmingSeelie.IsValid(entity) ||
-        			game::filters::puzzle::ElectroSeelie.IsValid(entity))
 		{
 			if (entity->name().find("ElectricSeelie") != std::string::npos)
 			{

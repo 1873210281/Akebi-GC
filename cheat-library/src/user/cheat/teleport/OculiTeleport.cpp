@@ -6,12 +6,12 @@
 
 namespace cheat::feature 
 {
-    OculiTeleport::OculiTeleport() : ItemTeleportBase("OculiTeleport", u8"ÉñÍ«")
+    OculiTeleport::OculiTeleport() : ItemTeleportBase("OculiTeleport", "Oculi")
     { }
 
 	const FeatureGUIInfo& OculiTeleport::GetGUIInfo() const
 	{
-		static const FeatureGUIInfo info{ u8"ÉñÍ«´«ËÍ", "Teleport", true };
+		static const FeatureGUIInfo info{ "0culi Teleport", "Teleport", true };
 		return info;
 	}
 

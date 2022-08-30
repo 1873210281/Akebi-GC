@@ -44,7 +44,7 @@ namespace cheat::feature
 
     const FeatureGUIInfo& AutoLoot::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info{ u8"自动战利品", "World", true };
+        static const FeatureGUIInfo info{ "Auto Loot", "World", true };
         return info;
     }
 
@@ -55,75 +55,75 @@ namespace cheat::feature
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
 
-			ImGui::BeginGroupPanel(u8"自动拾取");
+			ImGui::BeginGroupPanel("Auto-Pickup");
 			{
-				ConfigWidget(u8"开关", f_AutoPickup, u8"自动拾取周围物品.\n" \
-					u8"Note: 过大的速度和范围会导致风险.\n" \
-					u8"过于逆天会导致封号.\n\n" \
-					u8"如果与自定义范围一起使用，请确保先启用该选项.");
+				ConfigWidget("Enabled", f_AutoPickup, "Automatically picks up dropped items.\n" \
+					"Note: Using this with custom range and low delay times is extremely risky.\n" \
+					"Abuse will definitely merit a ban.\n\n" \
+					"If using with custom range, make sure this is turned on FIRST.");
 				ImGui::SameLine();
-				ImGui::TextColored(ImColor(255, 165, 0, 255), u8"查看注意事项!");
+				ImGui::TextColored(ImColor(255, 165, 0, 255), "Read the note!");
 			}
 			ImGui::EndGroupPanel();
 			
-			ImGui::BeginGroupPanel(u8"拾取范围");
+			ImGui::BeginGroupPanel("Custom Pickup Range");
 			{
-				ConfigWidget(u8"开/关", f_UseCustomRange, u8"启用自定义拾取范围。\n" \
-					u8"不建议使用高值，因为服务器很容易检测到。\n\n" \
-					u8"如果与自动拾取/自动宝箱一起使用，请最后打开此选项.");
-				ImGui::SameLine();
-				ImGui::TextColored(ImColor(255, 165, 0, 255), u8"查看注意事项");
-				ImGui::SetNextItemWidth(100.0f);
-				ConfigWidget(u8"范围 (m)", f_CustomRange, 0.1f, 0.5f, 40.0f, u8"将拾取/打开范围修改为该值（以米为单位）。");
-			}
-			ImGui::EndGroupPanel();
-			
-			ImGui::BeginGroupPanel(u8"拾取速度");
-			{
-				ImGui::SetNextItemWidth(100.0f);
-				ConfigWidget(u8"延迟时间 (ms)", f_DelayTime, 1, 0, 1000, u8"抢夺/打开操作之间的延迟（毫秒）.\n" \
-					u8"小于200ms的值是不安全的.\n 如果未启用自动功能，则不使用.");
-			}
-			ImGui::EndGroupPanel();
-
-			ImGui::BeginGroupPanel(u8"模拟人工点击");
-			{
-				ConfigWidget(u8"开/关", f_UseDelayTimeFluctuation, u8"启用延迟波动.\n" \
-					u8"模拟人工点击延迟，因为手动点击从不一致.");
+				ConfigWidget("Enabled", f_UseCustomRange, "Enable custom pickup range.\n" \
+					"High values are not recommended, as it is easily detected by the server.\n\n" \
+					"If using with auto-pickup/auto-treasure, turn this on LAST.");
 				ImGui::SameLine();
 				ImGui::TextColored(ImColor(255, 165, 0, 255), "Read the note!");
 				ImGui::SetNextItemWidth(100.0f);
-				ConfigWidget(u8"延迟范围 +(ms)", f_DelayTimeFluctuation, 1, 0, 1000, u8"延迟在“延迟时间+延迟时间+范围”之间随机波动");
+				ConfigWidget("Range (m)", f_CustomRange, 0.1f, 0.5f, 40.0f, "Modifies pickup/open range to this value (in meters).");
+			}
+			ImGui::EndGroupPanel();
+			
+			ImGui::BeginGroupPanel("Looting Speed");
+			{
+				ImGui::SetNextItemWidth(100.0f);
+				ConfigWidget("Delay Time (ms)", f_DelayTime, 1, 0, 1000, "Delay (in ms) between loot/open actions.\n" \
+					"Values under 200ms are unsafe.\nNot used if no auto-functions are on.");
+			}
+			ImGui::EndGroupPanel();
+
+			ImGui::BeginGroupPanel("Looting delay fluctuation");
+			{
+				ConfigWidget("Enabled", f_UseDelayTimeFluctuation, "Enable delay fluctuation.\n" \
+					"Simulates human clicking delay as manual clickling never consistent.");
+				ImGui::SameLine();
+				ImGui::TextColored(ImColor(255, 165, 0, 255), "Read the note!");
+				ImGui::SetNextItemWidth(100.0f);
+				ConfigWidget("Delay range +(ms)", f_DelayTimeFluctuation, 1, 0, 1000, "Delay randomly fluctuates between 'Delay Time'+'Delay Time+range'");
 			}
 			ImGui::EndGroupPanel();
 			
 			ImGui::TableSetColumnIndex(1);
-			ImGui::BeginGroupPanel(u8"自动宝箱");
+			ImGui::BeginGroupPanel("Auto-Treasure");
 			{
-				ConfigWidget(u8"开关", f_AutoTreasure, u8"自动打开箱子和其他宝藏。\n" \
-					u8"注意：将其与自定义范围和低延迟时间一起使用是非常危险的。\n" \
-					u8"虐待行为绝对值得禁止。\n\n" \
-					u8"如果与自定义范围一起使用，请确保先启用该选项.");
+				ConfigWidget("Enabled", f_AutoTreasure, "Automatically opens chests and other treasures.\n" \
+					"Note: Using this with custom range and low delay times is extremely risky.\n" \
+					"Abuse will definitely merit a ban.\n\n" \
+					"If using with custom range, make sure this is turned on FIRST.");
 				ImGui::SameLine();
-				ImGui::TextColored(ImColor(255, 165, 0, 255), u8"读这张消息！");
+				ImGui::TextColored(ImColor(255, 165, 0, 255), "Read the note!");
 				ImGui::Indent();
-				ConfigWidget(u8"宝箱", f_Chest, u8"普通、珍贵、华丽等。");
-				ConfigWidget(u8"地脉", f_Leyline, u8"莫拉/经验书/大世界boos,等等..");
-				ConfigWidget(u8"调查点", f_Investigate, u8"标记为调查/搜索等");
-				ConfigWidget(u8"任务交互", f_QuestInteract, u8"有效的任务是与点进行交互。");
-				ConfigWidget(u8"其他", f_Others, u8"书页、旋转晶体等。");
+				ConfigWidget("Chests", f_Chest, "Common, precious, luxurious, etc.");
+				ConfigWidget("Leyline", f_Leyline, "Mora/XP, overworld/Trounce bosses, etc.");
+				ConfigWidget("Search Points", f_Investigate, "Marked as Investigate/Search, etc.");
+				ConfigWidget("Quest Interacts", f_QuestInteract, "Valid quest interact points.");
+				ConfigWidget("Others", f_Others, "Book Pages, Spincrystals, etc.");
 				ImGui::Unindent();
 			}
 			ImGui::EndGroupPanel();
 			ImGui::EndTable();
 		}
 			
-    	ImGui::BeginGroupPanel(u8"拾取类型");
+    	ImGui::BeginGroupPanel("Pickup Filter");
 	    {
-			ConfigWidget(u8"开/关", f_PickupFilter, u8"启用拾取过滤器。\n");
-			ConfigWidget(u8"动物", f_PickupFilter_Animals, u8"鱼、蜥蜴、青蛙和飞行动物。"); ImGui::SameLine();
-			ConfigWidget(u8"掉落物", f_PickupFilter_DropItems, u8"材料、矿物或人工制品。"); ImGui::SameLine();
-			ConfigWidget(u8"资源", f_PickupFilter_Resources, u8"除了动物和掉落物品（植物、书籍等）以外的所有物品");
+			ConfigWidget("Enabled", f_PickupFilter, "Enable pickup filter.\n");
+			ConfigWidget("Animals", f_PickupFilter_Animals, "Fish, Lizard, Frog, Flying animals."); ImGui::SameLine();
+			ConfigWidget("Drop Items", f_PickupFilter_DropItems, "Material, Mineral, Artifact."); ImGui::SameLine();
+			ConfigWidget("Resources", f_PickupFilter_Resources, "Everything beside Animals and Drop Items (Plants, Books, etc).");
 	    }
     	ImGui::EndGroupPanel();
     }
@@ -135,7 +135,7 @@ namespace cheat::feature
 
     void AutoLoot::DrawStatus() 
     {
-		ImGui::Text(u8"自动战利品\n[%s%s%s%s%s%s]",
+		ImGui::Text("Auto Loot\n[%s%s%s%s%s%s]",
 			f_AutoPickup ? "AP" : "",
 			f_AutoTreasure ? fmt::format("{}AT", f_AutoPickup ? "|" : "").c_str() : "",
 			f_UseCustomRange ? fmt::format("{}CR{:.1f}m", f_AutoPickup || f_AutoTreasure ? "|" : "", f_CustomRange.value()).c_str() : "",

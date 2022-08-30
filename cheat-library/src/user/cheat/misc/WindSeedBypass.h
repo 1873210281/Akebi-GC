@@ -1,17 +1,18 @@
+#pragma once
 #include <cheat-base/cheat/Feature.h>
 #include <cheat-base/config/config.h>
+#include <map>
+
+#include <il2cpp-appdata.h>
 
 namespace cheat::feature
 {
-
-	class OpenTeamImmediately : public Feature
+	class WindSeedBypass : public Feature
 	{
 	public:
-		config::Field<config::Toggle<Hotkey>> f_Enabled;
-		//MoleMole_InLevelPlayerProfilePageContext*
-		void* InLevelPlayerProfilePageContext;
+		config::Field<bool> f_Enabled;
 
-		static OpenTeamImmediately& GetInstance();
+		static WindSeedBypass& GetInstance();
 
 		const FeatureGUIInfo& GetGUIInfo() const override;
 		void DrawMain() override;
@@ -20,7 +21,6 @@ namespace cheat::feature
 		void DrawStatus() override;
 
 	private:
-		OpenTeamImmediately();
+		WindSeedBypass();
 	};
 }
-
