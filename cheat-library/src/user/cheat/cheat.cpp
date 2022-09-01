@@ -10,7 +10,6 @@
 #include <cheat/misc/ProtectionBypass.h>
 #include <cheat/misc/Hotkeys.h>
 #include <cheat/misc/Debug.h>
-#include <cheat/misc/About.h>
 #include <cheat/misc/sniffer/PacketSniffer.h>
 
 #include <cheat/player/GodMode.h>
@@ -32,7 +31,6 @@
 #include <cheat/world/FakeTime.h>
 #include <cheat/world/AutoSeelie.h>
 #include <cheat/world/VacuumLoot.h>
-#include <cheat/world/GameSpeed.h>
 
 #include <cheat/teleport/ChestTeleport.h>
 #include <cheat/teleport/MapTeleport.h>
@@ -83,7 +81,6 @@ namespace cheat
 			FEAT_INST(Settings),
 			FEAT_INST(Hotkeys),
 			FEAT_INST(Debug),
-			FEAT_INST(About),
 			FEAT_INST(PacketSniffer),
 
 			FEAT_INST(GodMode),
@@ -108,7 +105,6 @@ namespace cheat
 			FEAT_INST(AutoChallenge),
 			FEAT_INST(MobVacuum),
 			FEAT_INST(FakeTime),
-			FEAT_INST(GameSpeed),
 
 			FEAT_INST(ChestTeleport),
 			FEAT_INST(OculiTeleport),
@@ -147,7 +143,6 @@ namespace cheat
 			"Visuals",
 			"Hotkeys",
 			"Settings",
-			"About",
 			"Debug"
 			});
 
